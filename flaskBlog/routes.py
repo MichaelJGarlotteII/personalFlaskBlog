@@ -1,8 +1,8 @@
-from flask import Flask, render_template, url_for, flash, redirect
-from forms import RegistrationForm, LogInForm
-app = Flask(__name__)
+from flask import render_template, url_for, flash, redirect
+from flaskBlog import app
+from flaskBlog.forms import RegistrationForm, LogInForm
+from flaskBlog.models import User, Post
 
-app.config['SECRET_KEY'] = '1187e1018f98604604e74ed3f89349fe'
 
 posts = [
     {
@@ -50,6 +50,3 @@ def login():
         else:
             flash('Login Unsuccessful. Please check username and password', 'danger')
     return render_template('login.html', title='Login', form=form)
-
-if __name__ == '__main__':
-    app.run(debug=True)
