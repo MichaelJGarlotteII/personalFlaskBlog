@@ -1,0 +1,4 @@
+Dockerization (3/16/2020 @ 8:45 PM)
+  Added the commit log to ensure better memory of commits to the project
+  Added a dockerfile for quicker builds in docker
+  Added requirements document to let docker know what needs to be downloaded into my python docker image
