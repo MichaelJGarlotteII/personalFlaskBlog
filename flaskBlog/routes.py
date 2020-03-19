@@ -1,11 +1,13 @@
 import os
 import secrets
+from flask_cors import cross_origin
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskBlog import app, db, bcrypt
 from flaskBlog.forms import RegistrationForm, LogInForm, UpdateAccountForm, PostForm
 from flaskBlog.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
+from json import dumps
 
 
 @app.route("/")
@@ -110,8 +112,10 @@ def post(post_id):
 @login_required
 def update_post(post_id):
     post = Post.query.get_or_404(post_id)
+    
     if post.author != current_user:
         abort(403)
+    
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
@@ -123,6 +127,21 @@ def update_post(post_id):
             form.title.data = post.title
             form.content.data = post.content
     return render_template('create_post.html', title='Update Post', form=form, legend='Update Post')
+
+@app.route("/api/post/<int:post_id>/upvote", methods=['GET','POST'])
+@cross_origin()
+def upvote_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    #get number of upvotes for a post
+    if request.method == 'GET':
+        print('getting upvotes for post...')
+        return {'upvotes':post.upvotes},200
+    else:
+        print('upvoting post!')
+        post.upvotes += 1
+        db.session.commit()
+        flash('Post upvoted!', 'success')
+        return redirect(url_for('post', post_id=post.id))
 
 
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
