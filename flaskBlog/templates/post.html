@@ -15,8 +15,15 @@
     </div>
     <h2 class="article-title">{{ post.title }}</h2>
     <p class="article-content">{{ post.content }}</p>
-    <button type="button" class="btn btn-secondary btn-sm m-1" onclick="upvote_post({{post.id}})">Upvote</button>
-    <h5 id='post-upvotes'>{{post.upvotes}}</h3>
+    {% if current_user.is_authenticated %}
+    <button id= "upvote-button" type="button" class="btn btn-primary btn-sm m-1 upvote-button" onclick="upvote_post({{post.id}})">
+      Upvotes <span id="post-upvotes" class="badge badge-light">{{upvotes}}</span>
+    </button>
+    {% else %}
+    <button type="button" class="btn btn-secondary upvote-button">
+      Upvotes <span id="post-upvotes" class="badge badge-light">{{upvotes}}</span>
+    </button>
+    {% endif %}
     <!-- this is janky, we might want to consider the limitations of templating for dynamic sites -->
     <script type="text/javascript">
       var post_id = {{ post.id }}
