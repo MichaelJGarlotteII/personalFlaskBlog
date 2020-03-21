@@ -5,7 +5,7 @@ from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskBlog import app, db, bcrypt
 from flaskBlog.forms import RegistrationForm, LogInForm, UpdateAccountForm, PostForm
-from flaskBlog.models import User, Post
+from flaskBlog.models import User, Post, Vote
 from flask_login import login_user, current_user, logout_user, login_required
 from json import dumps
 
@@ -14,7 +14,7 @@ from json import dumps
 @app.route("/home")
 def home():
     page = request.args.get('page', 1, type=int)
-    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=1)
+    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=10)
     return render_template('home.html', posts=posts)
 
 
@@ -95,7 +95,7 @@ def account():
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        post = Post(title=form.title.data, content=form.content.data, author=current_user,)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
@@ -106,7 +106,8 @@ def new_post():
 @app.route("/post/<int:post_id>")
 def post(post_id):
         post = Post.query.get_or_404(post_id)
-        return render_template('post.html', title=post.title, post=post, upvotes=len(get_upvote_users(post.upvotes)))
+        user_votes = get_user_votes(post_id)
+        return render_template('post.html', title=post.title, post=post, upvotes=len(user_votes.all()))
 
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
@@ -129,32 +130,31 @@ def update_post(post_id):
     return render_template('create_post.html', title='Update Post', form=form, legend='Update Post')
 
 
-# storing upvotes as a list of usernames is janky, I know
-# filter out the first ones
-def get_upvote_users(upvotes):
-    return list(filter(None, upvotes.split(',')))
+def get_user_votes(post_id):
+    return Vote.query.filter_by(post_id=post_id)
 
 @app.route("/api/post/<int:post_id>/upvote", methods=['GET','POST'])
 @cross_origin()
 @login_required
 def upvote_post(post_id):
     post = Post.query.get_or_404(post_id)
-    users_who_upvoted = get_upvote_users(post.upvotes)
-    print(users_who_upvoted)
+    user_votes = get_user_votes(post_id)
+    
     #get number of upvotes for a post
     if request.method == 'GET':
         print('getting upvotes for post...')   
-        return {'upvotes':len(users_who_upvoted)},200
+        return {'upvotes':len(user_votes.all())},200
     else:
-        if current_user.username not in users_who_upvoted:
-            post.upvotes = post.upvotes + ',' + current_user.username 
+        if current_user.id not in [vote.user_id for vote in user_votes.all()]:
+            vote = Vote(user_id=current_user.id,post_id=post.id)
+            db.session.add(vote)
         else:
-            return 400
+            return 'bad',400
         print('upvoting post!')
         
         # post.upvotes += 1
         db.session.commit()
-        return {'upvotes':len(users_who_upvoted)},200
+        return {'upvotes':len(user_votes.all())},200
 
 
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
