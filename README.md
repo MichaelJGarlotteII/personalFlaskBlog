@@ -61,5 +61,5 @@ SITE DETAILS:
       - templates directory:
 
            - This directory contains all of the HTML files for the site. layout.html is the detailed layout file for the site
-              and is applied to evvery page to maintain cohesiveness. From there a code block in python/Flask is added and connected
+              and is applied to every page to maintain cohesiveness. From there a code block in python/Flask is added and connected
               to every other HTML file to allow them to use the layout code and avoid redundant lines of code.
