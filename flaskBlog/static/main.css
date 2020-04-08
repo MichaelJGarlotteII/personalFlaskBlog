@@ -82,3 +82,7 @@ a.article-title:hover {
 .upvote-button {
   float: right;
 }
+
+.downvote-button {
+  float: right;
+}

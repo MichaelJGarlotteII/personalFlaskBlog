@@ -20,6 +20,7 @@ class User(db.Model, UserMixin):
 class Vote(db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     post_id = db.Column(db.Integer, nullable = False)
+    is_upvote = db.Column(db.Boolean, nullable = False, primary_key=True, default=True)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)

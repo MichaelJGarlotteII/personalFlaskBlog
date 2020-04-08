@@ -3,3 +3,4 @@ commit.txt
 *.pyc
 .vscode
 site.db
+redo_database.py

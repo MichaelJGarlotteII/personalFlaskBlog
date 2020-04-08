@@ -107,6 +107,7 @@ def new_post():
 def post(post_id):
         post = Post.query.get_or_404(post_id)
         user_votes = get_user_votes(post_id)
+        upvotes = [vote for vote in user_votes.all() if vote.is_upvote]
         return render_template('post.html', title=post.title, post=post, upvotes=len(user_votes.all()))
 
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
@@ -130,23 +131,36 @@ def update_post(post_id):
     return render_template('create_post.html', title='Update Post', form=form, legend='Update Post')
 
 
+#get upvotes and downvotes by post_id
 def get_user_votes(post_id):
     return Vote.query.filter_by(post_id=post_id)
 
-@app.route("/api/post/<int:post_id>/upvote", methods=['GET','POST'])
+def get_number_of_upvotes(post_id):
+    #
+    return len(Vote.query.filter_by(post_id=post_id, is_upvote=True).all())
+
+def get_number_of_downvotes(post_id):
+    return len(Vote.query.filter_by(post_id=post_id, is_upvote=False).all())
+
+
+@app.route("/api/post/<int:post_id>/<is_upvote>", methods=['GET','POST'])
 @cross_origin()
-@login_required
-def upvote_post(post_id):
+#@login_required
+def upvote_post(post_id, is_upvote):
+    current_user.id = 1
+    requested_vote_type = True if is_upvote == 'true' else False 
     post = Post.query.get_or_404(post_id)
     user_votes = get_user_votes(post_id)
-    
+
+    #MOVE THIS DOWN
+    users_who_voted = [vote.user_id for vote in user_votes.all() if vote.is_upvote == requested_vote_type]
     #get number of upvotes for a post
     if request.method == 'GET':
         print('getting upvotes for post...')   
         return {'upvotes':len(user_votes.all())},200
     else:
-        if current_user.id not in [vote.user_id for vote in user_votes.all()]:
-            vote = Vote(user_id=current_user.id,post_id=post.id)
+        if current_user.id not in users_who_voted:
+            vote = Vote(user_id=current_user.id,post_id=post.id,is_upvote=requested_vote_type)
             db.session.add(vote)
         else:
             return 'bad',400
@@ -154,7 +168,8 @@ def upvote_post(post_id):
         
         # post.upvotes += 1
         db.session.commit()
-        return {'upvotes':len(user_votes.all())},200
+
+        return {'upvotes':len(users_who_voted)},200
 
 
 @app.route("/post/<int:post_id>/delete", methods=['POST'])
