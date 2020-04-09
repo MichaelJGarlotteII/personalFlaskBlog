@@ -1,6 +1,5 @@
 import os
 import secrets
-from flask_cors import cross_origin
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskBlog import app, db, bcrypt
@@ -138,7 +137,6 @@ def get_user_votes(post_id):
     return Vote.query.filter_by(post_id=post_id)
 
 @app.route("/api/post/<int:post_id>/upvote", methods=['GET','POST'])
-@cross_origin()
 @login_required
 def upvote_post(post_id):
     post = Post.query.get_or_404(post_id)
