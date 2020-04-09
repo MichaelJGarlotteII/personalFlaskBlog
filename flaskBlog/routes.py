@@ -1,6 +1,5 @@
 import os
 import secrets
-from flask_cors import cross_origin
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskBlog import app, db, bcrypt
@@ -21,6 +20,10 @@ def home():
 @app.route("/about")
 def about():
     return render_template('about.html', title='About')
+
+@app.route("/me")
+def me():
+    return render_template('aboutme.html', title='About Me')
 
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -113,10 +116,10 @@ def post(post_id):
 @login_required
 def update_post(post_id):
     post = Post.query.get_or_404(post_id)
-    
+
     if post.author != current_user:
         abort(403)
-    
+
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
@@ -134,15 +137,14 @@ def get_user_votes(post_id):
     return Vote.query.filter_by(post_id=post_id)
 
 @app.route("/api/post/<int:post_id>/upvote", methods=['GET','POST'])
-@cross_origin()
 @login_required
 def upvote_post(post_id):
     post = Post.query.get_or_404(post_id)
     user_votes = get_user_votes(post_id)
-    
+
     #get number of upvotes for a post
     if request.method == 'GET':
-        print('getting upvotes for post...')   
+        print('getting upvotes for post...')
         return {'upvotes':len(user_votes.all())},200
     else:
         if current_user.id not in [vote.user_id for vote in user_votes.all()]:
@@ -151,7 +153,7 @@ def upvote_post(post_id):
         else:
             return 'bad',400
         print('upvoting post!')
-        
+
         # post.upvotes += 1
         db.session.commit()
         return {'upvotes':len(user_votes.all())},200
