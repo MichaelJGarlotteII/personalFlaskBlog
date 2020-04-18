@@ -1,5 +1,7 @@
 [![michaeljgarlotteii](https://circleci.com/gh/michaeljgarlotteii/personalFlaskBlog/tree/feature/circle-ci.svg?style=svg)](https://circleci.com/gh/michaeljgarlotteii/personalFlaskBlog/tree/feature/circle-ci)
 
+[![CircleCI](https://circleci.com/gh/circleci/circleci-docs.svg?style=svg)](https://circleci.com/gh/circleci/circleci-docs)
+
 HOW THIS WAS MADE
 ---
 This Github repository is the home of the michaeljgarlotteii.com blog/portfolio site created
