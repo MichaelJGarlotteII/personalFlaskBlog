@@ -4,11 +4,11 @@ jobs:
     machine: true
     steps:
       - checkout
-      - run: docker build . -t gcr.io/${GCP_PROJECT}/mblog:$CIRCLE_BRANCH-$CIRCLE_SHA1
+      - run: docker build . -t gcr.io/${GCP_PROJECT}/mblog:$CIRCLE_SHA1
   deploy:
     machine: true
     steps:
       - run: echo ${GOOGLE_AUTH} > ${HOME}/GCP-KEY.json
       - run: gcloud auth activate-service-account --key-file ${HOME}/GCP-KEY.json
       - run: gcloud --quiet config set project ${GCP_PROJECT}
-      - run: gcloud docker -- push gcr.io/${GCP_PROJECT}/mblog:$CIRCLE_BRANCH-$CIRCLE_SHA1
+      - run: gcloud docker -- push gcr.io/${GCP_PROJECT}/mblog:$CIRCLE_SHA1
