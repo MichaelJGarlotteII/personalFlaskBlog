@@ -7,3 +7,5 @@ jobs:
       - run: echo ${GOOGLE_AUTH} > ${HOME}/GCP-KEY.json
       - run: docker build . -t gcr.io/${GCP_PROJECT}/mblog:$CIRCLE_SHA1
       - run: gcloud auth activate-service-account --key-file ${HOME}/GCP-KEY.json
+      - run: gcloud --quiet config set project ${GCP_PROJECT}
+      - run: gcloud docker -- push gcr.io/${GCP_PROJECT}/${IMAGE_NAME}:$CIRCLE_SHA1
