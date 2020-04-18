@@ -6,4 +6,4 @@ jobs:
     steps:
       - checkout
       - run:
-         command: echo 'Hello World'
+         command: docker build . -t mblog
