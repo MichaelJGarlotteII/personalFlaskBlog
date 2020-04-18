@@ -1,9 +1,9 @@
 version: 2.1
 jobs:
   build:
-    machine:
-      environment:
-        SHORT_GIT_HASH: $(echo $CIRCLE_SHA1 | cut -c -7)
+    environment:
+      SHORT_GIT_HASH: $(echo $CIRCLE_SHA1 | cut -c -7)
+    machine: true
     steps:
       - checkout
       - run: docker build . -t gcr.io/${GCP_PROJECT}/mblog:$CIRCLE_BRANCH-$SHORT_GIT_HASH
