@@ -1,8 +1,10 @@
 version: 2.1
 jobs:
   build:
-    machine: true
+    docker:
+      - image: circleci/python:3.6
     steps:
       - checkout
-      - run:
-         command: docker build . -t mblog
+      - setup_remote_docker:
+         docker_layer_caching: true 
+      - run: docker build . -t mblog
