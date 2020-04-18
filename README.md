@@ -1,4 +1,4 @@
-[![michaeljgarlotteii](https://circleci.com/gh/michaeljgarlotteii/personalFlaskBlog/tree/feature/circle-ci.svg?style=svg)](https://github.com/MichaelJGarlotteII/personalFlaskBlog/tree/feature/circle-ci)
+[![michaeljgarlotteii](https://circleci.com/gh/michaeljgarlotteii/personalFlaskBlog/tree/feature/circle-ci.svg?style=svg)](https://circleci.com/gh/michaeljgarlotteii/personalFlaskBlog/tree/feature/circle-ci)
 
 HOW THIS WAS MADE
 ---
