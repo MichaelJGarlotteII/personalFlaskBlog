@@ -1,4 +1,4 @@
-[![michaeljgarlotteii](https://circleci.com/gh/michaeljgarlotteii/personalFlaskBlog/tree/feature/circle-ci.svg?style=svg)](https://circleci.com/gh/michaeljgarlotteii/personalFlaskBlog/tree/feature/circle-ci)
+[![michaeljgarlotteii](https://circleci.com/gh/MichaelJGarlotteII/personalFlaskBlog.svg?style=svg)](https://circleci.com/gh/michaeljgarlotteii/personalFlaskBlog)
 
 [![CircleCI](https://circleci.com/gh/circleci/circleci-docs.svg?style=svg)](https://circleci.com/gh/circleci/circleci-docs)
 
