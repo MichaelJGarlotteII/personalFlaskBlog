@@ -1,0 +1,13 @@
+version: 2.1
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+      - run: docker build . -t gcr.io/${GCP_PROJECT}/mblog:$CIRCLE_SHA1
+      - run: echo ${GOOGLE_AUTH} > ${HOME}/GCP-KEY.json
+      - run: gcloud auth activate-service-account --key-file ${HOME}/GCP-KEY.json
+      - run: gcloud --quiet config set project ${GCP_PROJECT}
+      - run: gcloud docker -- push gcr.io/${GCP_PROJECT}/mblog:$CIRCLE_SHA1
+
+      
