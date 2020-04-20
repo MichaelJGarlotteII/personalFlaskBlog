@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class='content-section'>
+  <h2 class="account-heading">About Me</h2>
+  <p class="text-secondary">michaeljgarlotteii@gmail.com</p>
+  <br>
+  <br>
+  <p class="article-content">My name is Michael Garlotte, a graduate from Mississippi
+                             State University with a Bachelor of Science in Engineering
+                             and a concentration in Computer Science. I am currently
+                             seeking employment in fields such as Web Development,
+                             Data Analytics, and Software Development. I'm originally
+                             from Flower Mound, Texas and have relocated to the DFW
+                             (Dallas-Ft. Worth) Metroplex to seek opportunities. In my
+                             free time I like to watch sports, play strategy games,
+                             and hang with my fiance and our cat. Below you can get to
+                             know more about me at the following:</p>
+   <br>
+   <br>
+   <p class="text-secondary"><a href="https://www.linkedin.com/in/michaeljgarlotteii/">My LinkedIn</a></p>
+   <p class="article-content">I check my LinkedIn pretty much every day so I should be
+                              super responsive to messages on here.</p>
+   <br>
+   <p class="text-secondary"><a href="https://github.com/MichaelJGarlotteII">My Github</a></p>
+   <p class="article-content">My Github contains the repository for this site and any
+                              other projects I may do in the future. I did my best to
+                              follow best practices for version control on these repositories.</p>
+   <br>
+   <p class="text-secondary"><a href="{{ url_for('static', filename='MichaelGarlotteResume2020.pdf') }}">My Resume</a></p>
+   <p class="article-content">Here's where you can find a copy of my resume with more
+                              detail about what I've accomplished over the years.</p>
+</div>
+{% endblock content %}
