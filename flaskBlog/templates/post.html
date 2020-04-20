@@ -16,10 +16,10 @@
     <h2 class="article-title">{{ post.title }}</h2>
     <p class="article-content">{{ post.content }}</p>
     {% if current_user.is_authenticated %}
-    <button id= "downvote-button" type="button" class="btn btn-outline-danger btn-sm m-1 downvote-button" onclick="upvote_post({{post.id}})">
-      Downvotes <span id="post-upvotes" class="badge badge-light">{{upvotes}}</span>
+    <button id= "downvote-button" type="button" class="btn btn-outline-danger btn-sm m-1 downvote-button" onclick="vote_on_post(false)">
+      Downvotes <span id="post-downvotes" class="badge badge-light">{{downvotes}}</span>
     </button>
-    <button id= "upvote-button" type="button" class="btn btn-outline-primary btn-sm m-1 upvote-button" onclick="upvote_post({{post.id}})">
+    <button id= "upvote-button" type="button" class="btn btn-outline-primary btn-sm m-1 upvote-button" onclick="vote_on_post(true)">
       Upvotes <span id="post-upvotes" class="badge badge-light">{{upvotes}}</span>
     </button>
     
