@@ -1,4 +1,5 @@
-### Updated as of 3/25/2020 @1:00 P.M.
+[![michaeljgarlotteii](https://circleci.com/gh/MichaelJGarlotteII/personalFlaskBlog.svg?style=svg)](https://circleci.com/gh/michaeljgarlotteii/personalFlaskBlog)
+
 
 HOW THIS WAS MADE
 ---
