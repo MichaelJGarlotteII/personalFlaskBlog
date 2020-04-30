@@ -14,7 +14,8 @@ from json import dumps
 @app.route("/home")
 def home():
     page = request.args.get('page', 1, type=int)
-    posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=10)
+    posts = Post.query.order_by(
+        Post.date_posted.desc()).paginate(page=page, per_page=10)
     return render_template('home.html', posts=posts)
 
 
@@ -29,8 +30,10 @@ def register():
         return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        hashed_pw = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_pw)
+        hashed_pw = bcrypt.generate_password_hash(
+            form.password.data).decode('utf-8')
+        user = User(username=form.username.data,
+                    email=form.email.data, password=hashed_pw)
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created, you can now log in!', 'success')
@@ -53,6 +56,7 @@ def login():
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)
 
+
 @app.route("/logout")
 def logout():
     logout_user()
@@ -63,7 +67,8 @@ def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_fn = random_hex + f_ext
-    picture_path = os.path.join(app.root_path, 'static/profile_pics', picture_fn)
+    picture_path = os.path.join(
+        app.root_path, 'static/profile_pics', picture_fn)
     output_size = (125, 125)
     i = Image.open(form_picture)
     i.thumbnail(output_size)
@@ -87,15 +92,18 @@ def account():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
-    image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
+    image_file = url_for(
+        'static', filename='profile_pics/' + current_user.image_file)
     return render_template('account.html', title='Account', image_file=image_file, form=form)
+
 
 @app.route("/post/new", methods=['GET', 'POST'])
 @login_required
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-        post = Post(title=form.title.data, content=form.content.data, author=current_user,)
+        post = Post(title=form.title.data,
+                    content=form.content.data, author=current_user,)
         db.session.add(post)
         db.session.commit()
         flash('Your post has been created!', 'success')
@@ -105,18 +113,19 @@ def new_post():
 
 @app.route("/post/<int:post_id>")
 def post(post_id):
-        post = Post.query.get_or_404(post_id)
-        user_votes = get_user_votes(post_id)
-        return render_template('post.html', title=post.title, post=post, upvotes=len(user_votes.all()))
+    post = Post.query.get_or_404(post_id)
+    user_votes = get_user_votes(post_id)
+    return render_template('post.html', title=post.title, post=post, upvotes=len(user_votes.all()))
+
 
 @app.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
 @login_required
 def update_post(post_id):
     post = Post.query.get_or_404(post_id)
-    
+
     if post.author != current_user:
         abort(403)
-    
+
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
@@ -125,36 +134,37 @@ def update_post(post_id):
         flash('Your post has been updated!', 'success')
         return redirect(url_for('post', post_id=post.id))
     elif request.method == 'GET':
-            form.title.data = post.title
-            form.content.data = post.content
+        form.title.data = post.title
+        form.content.data = post.content
     return render_template('create_post.html', title='Update Post', form=form, legend='Update Post')
 
 
 def get_user_votes(post_id):
     return Vote.query.filter_by(post_id=post_id)
 
-@app.route("/api/post/<int:post_id>/upvote", methods=['GET','POST'])
+
+@app.route("/api/post/<int:post_id>/upvote", methods=['GET', 'POST'])
 @cross_origin()
 @login_required
 def upvote_post(post_id):
     post = Post.query.get_or_404(post_id)
     user_votes = get_user_votes(post_id)
-    
-    #get number of upvotes for a post
+
+    # get number of upvotes for a post
     if request.method == 'GET':
-        print('getting upvotes for post...')   
-        return {'upvotes':len(user_votes.all())},200
+        print('getting upvotes for post...')
+        return {'upvotes': len(user_votes.all())}, 200
     else:
         if current_user.id not in [vote.user_id for vote in user_votes.all()]:
-            vote = Vote(user_id=current_user.id,post_id=post.id)
+            vote = Vote(user_id=current_user.id, post_id=post.id)
             db.session.add(vote)
         else:
-            return 'bad',400
+            return 'bad', 400
         print('upvoting post!')
-        
+
         # post.upvotes += 1
         db.session.commit()
-        return {'upvotes':len(user_votes.all())},200
+        return {'upvotes': len(user_votes.all())}, 200
 
 
 @app.route("/post/<int:post_id>/delete", methods=['POST'])

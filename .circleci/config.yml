@@ -1,6 +1,22 @@
 version: 2.1
 jobs:
-  build:
+  test:
+    docker:
+      - image: circleci/python
+    steps:
+      -checkout
+      - run:
+         command: |
+            sudo pip install pipenv
+            pipenv install
+      - run: autopep8 routes.py -i
+      - run: autopep8 models.py -i
+      - run: autopep8 forms.py -i
+ build:
+    branches:
+      only:
+       - master
+       - develop
     machine: true
     steps:
       - checkout
@@ -9,5 +25,3 @@ jobs:
       - run: gcloud auth activate-service-account --key-file ${HOME}/GCP-KEY.json
       - run: gcloud --quiet config set project ${GCP_PROJECT}
       - run: gcloud docker -- push gcr.io/${GCP_PROJECT}/mblog:$CIRCLE_SHA1
-
-      
