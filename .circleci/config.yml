@@ -5,8 +5,7 @@ jobs:
       - image: circleci/python
     steps:
       -checkout
-      - run:
-         command: |
+      - run: |
             sudo pip install pipenv
             pipenv install
       - run: autopep8 routes.py -i
