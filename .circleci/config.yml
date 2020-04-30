@@ -11,10 +11,6 @@ jobs:
       - run: pipenv run autopep8 models.py -i
       - run: pipenv run autopep8 forms.py -i
   build:
-    branches:
-      only:
-       - master
-       - develop
     machine: true
     steps:
       - checkout
