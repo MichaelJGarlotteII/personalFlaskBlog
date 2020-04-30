@@ -10,7 +10,7 @@ jobs:
       - run: pipenv run autopep8 routes.py -i
       - run: pipenv run autopep8 models.py -i
       - run: pipenv run autopep8 forms.py -i
- build:
+  build:
     branches:
       only:
        - master
