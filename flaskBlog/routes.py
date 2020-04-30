@@ -1,6 +1,5 @@
 import os
 import secrets
-from flask_cors import cross_origin
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskBlog import app, db, bcrypt
@@ -22,6 +21,10 @@ def home():
 @app.route("/about")
 def about():
     return render_template('about.html', title='About')
+
+@app.route("/me")
+def me():
+    return render_template('aboutme.html', title='About Me')
 
 
 @app.route("/register", methods=['GET', 'POST'])
