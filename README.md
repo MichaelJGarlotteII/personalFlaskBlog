@@ -1,5 +1,5 @@
 [![michaeljgarlotteii](https://circleci.com/gh/MichaelJGarlotteII/personalFlaskBlog.svg?style=svg)](https://circleci.com/gh/michaeljgarlotteii/personalFlaskBlog)
-
+Note: I have not renewed the domain or the GCP hosting so the site is not currently functioning
 
 HOW THIS WAS MADE
 ---
@@ -20,7 +20,7 @@ domain's or cloud hosting. That sent me to my friend James, who you will see as 
 this repository. We hosted the site on GCP(Google Cloud Platform) and I got a very cheap domain from
 GoDaddy. Before we could get it up and running however, we decided we should Dockerize the web server
 so I could get more experience with Docker. After some trials, we got it running and connected to the
-domain that it currently resides at, michaeljgarlotteii.com:5000.
+domain that it currently resides at, //michaeljgarlotteii.com:5000//.
 
 
 SITE DETAILS:
